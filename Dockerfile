@@ -20,9 +20,9 @@ COPY static/ ./static/
 # Copy only the specific model file you're using
 COPY 70-epochs-320-imagesize-simple-augmentation-grayscale-nano-yolov8.pt .
 
-# Install PyTorch with CUDA 12.1 support (better GPU compatibility)
+# Install PyTorch 2.6+ with CUDA 12.8 support (includes sm_120 for RTX 5070)
 RUN pip install --no-cache-dir \
-    torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121 \
+    torch torchvision --index-url https://download.pytorch.org/whl/cu128 \
     && pip install --no-cache-dir \
     fastapi==0.122.0 \
     uvicorn==0.38.0 \
