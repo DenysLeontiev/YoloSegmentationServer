@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Model files (large trained models)
+*.pt
+*.onnx
+*.pth
+*.weights
+!70-epochs-320-imagesize-simple-augmentation-grayscale-nano-yolov8.pt
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Test files
+test_*.py
+*_test.py
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/

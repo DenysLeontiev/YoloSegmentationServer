@@ -1,0 +1,37 @@
+# Exclude all model files except the one we need
+*.pt
+*.onnx
+!70-epochs-320-imagesize-simple-augmentation-grayscale-nano-yolov8.pt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile.*
+.dockerignore
+
+# Misc
+*.log
+.DS_Store
