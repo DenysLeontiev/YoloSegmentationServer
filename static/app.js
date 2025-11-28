@@ -5,6 +5,8 @@ const cameraSelect = document.getElementById('cameraSelect');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 
+const videoSourceSelector = document.getElementById('videosource');
+
 let stream = null;
 let intervalId = null;
 let animationId = null;
@@ -13,6 +15,31 @@ const captureCtx = captureCanvas.getContext('2d');
 let isProcessing = false;
 let lastProcessedImage = null;
 let isRunning = false;
+
+async function initializeCameras() {
+    const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    tempStream.getTracks().forEach(track => track.stop());
+
+    await enumerateCameraDevices();
+}
+
+async function enumerateCameraDevices() {
+    let cameras = await navigator.mediaDevices.enumerateDevices();
+
+    videoSourceSelector.innerHTML = '';
+
+    for (let i = 0; i < cameras.length; i++) {
+        let camera = cameras[i];
+        if (camera.kind === 'videoinput') {
+            let option = document.createElement('option');
+            option.value = camera.deviceId;
+            option.text = camera.label || `Camera ${i + 1}`;
+            videoSourceSelector.appendChild(option);
+        }
+    }
+}
+
+initializeCameras();
 
 function renderLoop() {
     if (!isRunning) return;
@@ -26,11 +53,12 @@ function renderLoop() {
     animationId = requestAnimationFrame(renderLoop);
 }
 async function startCamera() {
-    const facingMode = cameraSelect.value;
-    stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: facingMode },
-        audio: false
-    });
+    const selectedDeviceId = videoSourceSelector.value;
+    const constraints = selectedDeviceId
+        ? { video: { deviceId: { exact: selectedDeviceId } }, audio: false }
+        : { video: { facingMode: cameraSelect.value }, audio: false };
+
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = stream;
 
     video.onloadedmetadata = () => {
