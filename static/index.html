@@ -1,76 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YOLO Segmentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        video {
-            display: none;
-        }
-        canvas {
-            width: 100%;
-            max-width: 640px;
-            display: block;
-            margin: 0 auto;
-            border: 2px solid #ddd;
-        }
-        #captureCanvas {
-            display: none;
-        }
-        .controls {
-            text-align: center;
-            margin: 20px 0;
-        }
-        select, button {
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        select {
-            border: 1px solid #ddd;
-            background-color: white;
-        }
-        #startBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #stopBtn {
-            background-color: #f44336;
-            color: white;
-        }
-        #stopBtn:disabled {
-            background-color: #cccccc;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <div class="container">
         <h1>YOLO Real-Time Segmentation</h1>
-        
+
         <video id="video" autoplay playsinline></video>
         <canvas id="canvas"></canvas>
         <canvas id="captureCanvas"></canvas>
-        
+
         <div class="controls">
             <select id="cameraSelect">
                 <option value="user">Front Camera</option>
@@ -81,111 +26,7 @@
         </div>
     </div>
 
-    <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const captureCanvas = document.getElementById('captureCanvas');
-        const cameraSelect = document.getElementById('cameraSelect');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        
-        let stream = null;
-        let intervalId = null;
-        let animationId = null;
-        const ctx = canvas.getContext('2d');
-        const captureCtx = captureCanvas.getContext('2d');
-        let isProcessing = false;
-        let lastProcessedImage = null;
-        let isRunning = false;
-        
-        function renderLoop() {
-            if (!isRunning) return;
-            
-            if (lastProcessedImage) {
-                ctx.drawImage(lastProcessedImage, 0, 0, canvas.width, canvas.height);
-            } else {
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            }
-            
-            animationId = requestAnimationFrame(renderLoop);
-        }
-        async function startCamera() {
-            const facingMode = cameraSelect.value;
-            stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: facingMode }, 
-                audio: false 
-            });
-            video.srcObject = stream;
-            
-            video.onloadedmetadata = () => {
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                captureCanvas.width = video.videoWidth;
-                captureCanvas.height = video.videoHeight;
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-                isRunning = true;
-                renderLoop();
-                intervalId = setInterval(processFrame, 100);
-            };
-        }
-        
-        function stopCamera() {
-            isRunning = false;
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-            }
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            if (intervalId) {
-                clearInterval(intervalId);
-                intervalId = null;
-            }
-            lastProcessedImage = null;
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
-        }
-        
-        async function processFrame() {
-            if (isProcessing) return;
-            isProcessing = true;
-            
-            captureCtx.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
-            
-            captureCanvas.toBlob(async (blob) => {
-                try {
-                    const formData = new FormData();
-                    formData.append('frame', blob);
-                    
-                    const response = await fetch('/process-frame', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    if (response.ok) {
-                        const imageBlob = await response.blob();
-                        if (!lastProcessedImage) {
-                            lastProcessedImage = new Image();
-                        }
-                        const img = lastProcessedImage;
-                        if (img.src && img.src.startsWith('blob:')) {
-                            URL.revokeObjectURL(img.src);
-                        }
-                        img.src = URL.createObjectURL(imageBlob);
-                    }
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    isProcessing = false;
-                }
-            }, 'image/jpeg', 0.8);
-        }
-        
-        startBtn.addEventListener('click', startCamera);
-        stopBtn.addEventListener('click', stopCamera);
-    </script>
+    <script src="/static/app.js"></script>
 </body>
+
 </html>

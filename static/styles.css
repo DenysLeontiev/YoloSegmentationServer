@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+video {
+    display: none;
+}
+
+canvas {
+    width: 100%;
+    max-width: 640px;
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #ddd;
+}
+
+#captureCanvas {
+    display: none;
+}
+
+.controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+select,
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+select {
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+#startBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#stopBtn {
+    background-color: #f44336;
+    color: white;
+}
+
+#stopBtn:disabled {
+    background-color: #cccccc;
+}
