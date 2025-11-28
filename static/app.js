@@ -6,6 +6,9 @@ const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 
 const videoSourceSelector = document.getElementById('videosource');
+const segmentationMaskColorPicker = document.getElementById('segmentationMaskColorPicker');
+const colorHexInput = document.getElementById('colorHexInput');
+const colorCircles = document.querySelectorAll('.color-circle');
 
 let stream = null;
 let intervalId = null;
@@ -15,6 +18,79 @@ const captureCtx = captureCanvas.getContext('2d');
 let isProcessing = false;
 let lastProcessedImage = null;
 let isRunning = false;
+
+// Function to convert hex to RGB and send to backend
+function setMaskColor(hex) {
+    const rgb = [
+        parseInt(hex.slice(1, 3), 16),
+        parseInt(hex.slice(3, 5), 16),
+        parseInt(hex.slice(5, 7), 16)
+    ];
+    console.log('RGB value:', rgb);
+    // Send RGB value to backend to update MASK_COLOR
+    fetch('/set-mask-color', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ rgb })
+    });
+}
+
+// Handle color circle clicks
+colorCircles.forEach(circle => {
+    circle.addEventListener('click', () => {
+        // Remove active class from all circles
+        colorCircles.forEach(c => c.classList.remove('active'));
+        // Add active class to clicked circle
+        circle.classList.add('active');
+        
+        const color = circle.getAttribute('data-color');
+        segmentationMaskColorPicker.value = color;
+        colorHexInput.value = color;
+        setMaskColor(color);
+    });
+});
+
+// Set first color as default
+if (colorCircles.length > 0) {
+    colorCircles[0].classList.add('active');
+    const defaultColor = colorCircles[0].getAttribute('data-color');
+    segmentationMaskColorPicker.value = defaultColor;
+    colorHexInput.value = defaultColor;
+    setMaskColor(defaultColor);
+}
+
+// Handle color picker change
+segmentationMaskColorPicker.addEventListener('input', (event) => {
+    const hex = event.target.value.toUpperCase();
+    colorHexInput.value = hex;
+    colorCircles.forEach(c => c.classList.remove('active'));
+    setMaskColor(hex);
+});
+
+// Handle hex input change
+colorHexInput.addEventListener('input', (event) => {
+    let hex = event.target.value.trim();
+    
+    // Auto-add # if missing
+    if (hex && !hex.startsWith('#')) {
+        hex = '#' + hex;
+        event.target.value = hex;
+    }
+    
+    // Validate hex color (3 or 6 digits after #)
+    if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex)) {
+        // Convert 3-digit hex to 6-digit
+        if (hex.length === 4) {
+            hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+        }
+        
+        segmentationMaskColorPicker.value = hex;
+        colorCircles.forEach(c => c.classList.remove('active'));
+        setMaskColor(hex);
+    }
+});
 
 async function initializeCameras() {
     const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });

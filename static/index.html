@@ -9,19 +9,56 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>YOLO Real-Time Segmentation</h1>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">YOLO Real-Time Segmentation</h1>
+            </div>
+        </header>
 
-        <video id="video" autoplay playsinline></video>
-        <canvas id="canvas"></canvas>
-        <canvas id="captureCanvas"></canvas>
+        <main class="main-content">
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas"></canvas>
+                    <canvas id="captureCanvas"></canvas>
+                </div>
+            </div>
 
-        <select id="videosource"></select>
+            <div class="controls-section">
+                <div class="control-group">
+                    <label class="control-label">Video Source</label>
+                    <div class="select-wrapper">
+                        <select id="videosource" class="custom-select"></select>
+                    </div>
+                </div>
 
-        <div class="controls">
-            <button id="startBtn">Start</button>
-            <button id="stopBtn" disabled>Stop</button>
-        </div>
+                <div class="control-group">
+                    <label class="control-label">Segmentation Color</label>
+                    <div class="color-picker-container">
+                        <div class="color-options">
+                            <button class="color-circle" data-color="#6B7FD7" style="background-color: #6B7FD7;" title="Slate Blue"></button>
+                            <button class="color-circle" data-color="#7BA89D" style="background-color: #7BA89D;" title="Sage Green"></button>
+                            <button class="color-circle" data-color="#C98B76" style="background-color: #C98B76;" title="Terracotta"></button>
+                            <button class="color-circle" data-color="#8B8BA0" style="background-color: #8B8BA0;" title="Dusty Purple"></button>
+                        </div>
+                        <div class="color-input-wrapper">
+                            <input id="segmentationMaskColorPicker" type="color" class="color-picker-input">
+                            <input id="colorHexInput" type="text" class="hex-input" placeholder="#6B7FD7" maxlength="7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="startBtn" class="btn btn-start">
+                        <span class="btn-text">Start Detection</span>
+                    </button>
+                    <button id="stopBtn" class="btn btn-stop" disabled>
+                        <span class="btn-text">Stop Detection</span>
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="/static/app.js"></script>
