@@ -220,305 +220,254 @@ canvas {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-.color-circle.active::after {
+/* Action Buttons */
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+}
 
-    .custom-color-picker.simple {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        cursor: pointer;
-        background: #fff;
-        border: 2px solid #bbb;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
-        transition: all 0.2s ease;
-        overflow: hidden;
-    }
+/* Base button styles */
+.btn {
+    padding: 18px 32px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
 
-    .custom-color-picker.simple:hover {
-        border-color: #888;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-        transform: scale(1.07);
-    }
+/* Start Button - Green gradient */
+.btn-start {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
 
-    .custom-color-picker.simple .color-input {
-        position: absolute;
-        width: 100%;
-        height: 100%;
+.btn-start:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+}
+
+.btn-start:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-stop {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.btn-stop:hover:not(:disabled) {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
+}
+
+.btn-stop:active:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-stop:disabled {
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    color: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    opacity: 0.6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
         opacity: 0;
-        cursor: pointer;
+        transform: translateY(20px);
     }
 
-    .custom-color-picker.simple .color-picker-icon {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #888;
-        pointer-events: none;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .hidden-color-input {
+@keyframes fadeInDown {
+    from {
         opacity: 0;
-        width: 0;
-        height: 0;
-        position: absolute;
+        transform: translateY(-30px);
     }
 
-    /* Action Buttons */
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .app-container {
+        padding: 30px;
+    }
+
+    .header {
+        padding: 50px 20px;
+    }
+
+    .main-content {
+        gap: 40px;
+    }
+
+    .controls-section {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 20px 10px;
+    }
+
+    .video-section {
+        padding: 10px;
+    }
+
+    .video-wrapper {
+        aspect-ratio: 4 / 3;
+    }
+
+    .controls-section {
+        padding: 20px;
+    }
+
+    .color-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .color-picker-input {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hex-input {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        grid-template-columns: 2fr 1fr;
+    }
+
     .action-buttons {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 15px;
-        margin-top: 30px;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 5px;
     }
 
-    .btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .header {
+        padding: 15px 10px;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .video-section {
+        padding: 5px;
+    }
+
+    .video-wrapper {
+        aspect-ratio: auto;
+        min-height: 75vh;
+        height: 75vh;
+    }
+
+    .controls-section {
+        padding: 20px;
+    }
+
+    .color-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .color-picker-input {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hex-input {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 0;
+    }
+
+    .header {
+        padding: 8px 5px;
+        margin-bottom: 5px;
+    }
+
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .main-content {
         gap: 10px;
-        padding: 16px 24px;
-        font-size: 1rem;
-        font-weight: 500;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        letter-spacing: 0.3px;
     }
 
-    .btn-icon {
-        font-size: 1.1rem;
-    }
-
-    .btn-start {
-        background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
-        color: white;
-    }
-
-    .btn-start:hover {
-        background: linear-gradient(135deg, #5a67d8 0%, #4c51bf 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-
-    .btn-start:active {
-        transform: translateY(0);
-    }
-
-    .btn-stop {
-        background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
-        color: white;
-    }
-
-    .btn-stop:not(:disabled):hover {
-        background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4);
-    }
-
-    .btn-stop:not(:disabled):active {
-        transform: translateY(0);
-    }
-
-    .btn-stop:disabled {
-        background: #e2e8f0;
-        color: #a0aec0;
-        cursor: not-allowed;
+    .video-section {
+        padding: 0;
+        border-radius: 0;
         box-shadow: none;
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .video-wrapper {
+        border-radius: 0;
+        min-height: 80vh;
+        height: 80vh;
     }
 
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .controls-section {
+        padding: 16px;
     }
 
-    /* Responsive Design */
-    @media (min-width: 768px) {
-        .app-container {
-            padding: 30px;
-        }
-
-        .header {
-            padding: 50px 20px;
-        }
-
-        .main-content {
-            gap: 40px;
-        }
-
-        .controls-section {
-            padding: 40px;
-        }
+    .color-circle {
+        width: 42px;
+        height: 42px;
     }
 
-    @media (max-width: 768px) {
-        .app-container {
-            padding: 10px;
-        }
-
-        .header {
-            padding: 20px 10px;
-        }
-
-        .video-section {
-            padding: 10px;
-        }
-
-        .video-wrapper {
-            aspect-ratio: 4 / 3;
-        }
-
-        .controls-section {
-            padding: 20px;
-        }
-
-        .color-circle {
-            width: 44px;
-            height: 44px;
-        }
-
-        .color-picker-input {
-            width: 44px;
-            height: 44px;
-        }
-
-        .hex-input {
-            font-size: 0.9rem;
-            padding: 10px 12px;
-        }
+    .color-picker-input {
+        width: 42px;
+        height: 42px;
     }
 
-    @media (min-width: 1024px) {
-        .main-content {
-            grid-template-columns: 2fr 1fr;
-        }
-
-        .action-buttons {
-            grid-template-columns: 1fr;
-        }
+    .btn {
+        padding: 14px 20px;
+        font-size: 0.95rem;
     }
 
-    @media (max-width: 768px) {
-        .app-container {
-            padding: 5px;
-        }
-
-        .header {
-            padding: 15px 10px;
-            margin-bottom: 10px;
-        }
-
-        .title {
-            font-size: 1.5rem;
-        }
-
-        .video-section {
-            padding: 5px;
-        }
-
-        .video-wrapper {
-            aspect-ratio: auto;
-            min-height: 75vh;
-            height: 75vh;
-        }
-
-        .controls-section {
-            padding: 20px;
-        }
-
-        .color-circle {
-            width: 44px;
-            height: 44px;
-        }
-
-        .color-picker-input {
-            width: 44px;
-            height: 44px;
-        }
-
-        .hex-input {
-            font-size: 0.9rem;
-            padding: 10px 12px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .app-container {
-            padding: 0;
-        }
-
-        .header {
-            padding: 8px 5px;
-            margin-bottom: 5px;
-        }
-
-        .title {
-            font-size: 1.3rem;
-        }
-
-        .main-content {
-            gap: 10px;
-        }
-
-        .video-section {
-            padding: 0;
-            border-radius: 0;
-            box-shadow: none;
-        }
-
-        .video-wrapper {
-            border-radius: 0;
-            min-height: 80vh;
-            height: 80vh;
-        }
-
-        .controls-section {
-            padding: 16px;
-        }
-
-        .color-circle {
-            width: 42px;
-            height: 42px;
-        }
-
-        .color-picker-input {
-            width: 42px;
-            height: 42px;
-        }
-
-        .btn {
-            padding: 14px 20px;
-            font-size: 0.95rem;
-        }
-
-        .action-buttons {
-            grid-template-columns: 1fr;
-        }
+    .action-buttons {
+        grid-template-columns: 1fr;
     }
 }
